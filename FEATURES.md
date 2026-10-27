@@ -62,3 +62,10 @@
 - 第 4 遍：平板断点审计 11/11 通过（手机/平板竖屏/平板横屏断点、画布 touch-action、表格滚动、弹窗宽度、触屏尺寸、抽屉、安全区、横向裁剪、双指/平移/连线代码）。
 - 第 5 遍：需求门禁：每次任务前重读 REQUIREMENTS.md（A–G 共 73 行汇总），未完成项不谎称完成；待浏览器回执后第 6 遍核对 SQL/函数/Secret 与真实调用。
 - 待核对（浏览器任务进行中）：StudyFlow 项目 SQL 001+002 是否成功、nexus-chat 函数是否部署成功、Secret 名字是否已保存、真实调用是否返回 DeepSeek 内容；未收到回执前不宣称后端已通。
+- 第 6 遍（GitHub 回读）：第二提交 d4cfc3dbe5a6f2b89633cfa6ff450e96baec5f31 已确认，study.tsx 回读成功；推送清单 25 个文件，不含 .env/dist/node_modules。
+
+## 合并后端第 7 遍核对（2026-10-28 00:42–00:45，浏览器回执后）
+- 浏览器回执：StudyFlow 项目 SQL 001+002 成功，12 张 nexus_ 表全部存在（nexus_agents、nexus_workflows、nexus_prompts、nexus_collections、nexus_models、nexus_runs、nexus_versions、nexus_study_subjects、nexus_study_mistakes、nexus_study_reviews、nexus_study_sessions、nexus_study_tasks）；nexus-chat 函数部署成功，端点 https://gjejcjcpcgkkmiksszrk.supabase.co/functions/v1/nexus-chat；Secret 名字 DEEPSEEK_API_KEY 已保存（只报名字，不复述值）。
+- 浏览器修正了本地 SQL 的一个真实 bug：CREATE POLICY 不支持 IF NOT EXISTS，首次运行报 ERROR 42601，浏览器按文件内 DO 块写法做了等效修正后成功。本地两个 migration 已同步改成 DO 块幂等写法，残留 create policy if not exists 计数为 0。
+- 学习日历已从 2026 年 10 月固定布局改成当前月份动态生成，月份可前后切换，构建通过。
+- 待核实（不谎称已通）：本机命令行直接调 nexus-chat 与读表两次超时，未拿到 DeepSeek 返回或明确报错，属于本机出站超时、不是函数报错；真实模型返回仍需浏览器或应用内实测确认，确认前不在文档里写“真实模型已打通”。

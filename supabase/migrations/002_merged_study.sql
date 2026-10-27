@@ -10,8 +10,28 @@ alter table nexus_study_mistakes enable row level security;
 alter table nexus_study_reviews enable row level security;
 alter table nexus_study_sessions enable row level security;
 alter table nexus_study_tasks enable row level security;
-create policy if not exists nexus_anon_all on nexus_study_subjects for all to anon using (true) with check (true);
-create policy if not exists nexus_anon_all on nexus_study_mistakes for all to anon using (true) with check (true);
-create policy if not exists nexus_anon_all on nexus_study_reviews for all to anon using (true) with check (true);
-create policy if not exists nexus_anon_all on nexus_study_sessions for all to anon using (true) with check (true);
-create policy if not exists nexus_anon_all on nexus_study_tasks for all to anon using (true) with check (true);
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='nexus_study_subjects' and policyname='nexus_anon_all') then
+    create policy nexus_anon_all on nexus_study_subjects for all to anon using (true) with check (true);
+  end if;
+end $$;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='nexus_study_mistakes' and policyname='nexus_anon_all') then
+    create policy nexus_anon_all on nexus_study_mistakes for all to anon using (true) with check (true);
+  end if;
+end $$;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='nexus_study_reviews' and policyname='nexus_anon_all') then
+    create policy nexus_anon_all on nexus_study_reviews for all to anon using (true) with check (true);
+  end if;
+end $$;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='nexus_study_sessions' and policyname='nexus_anon_all') then
+    create policy nexus_anon_all on nexus_study_sessions for all to anon using (true) with check (true);
+  end if;
+end $$;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='nexus_study_tasks' and policyname='nexus_anon_all') then
+    create policy nexus_anon_all on nexus_study_tasks for all to anon using (true) with check (true);
+  end if;
+end $$;

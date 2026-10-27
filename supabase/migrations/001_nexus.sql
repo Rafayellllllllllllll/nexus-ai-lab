@@ -20,9 +20,33 @@ do $$ begin
     create policy nexus_anon_all on nexus_agents for all to anon using (true) with check (true);
   end if;
 end $$;
-create policy if not exists nexus_anon_all on nexus_workflows for all to anon using (true) with check (true);
-create policy if not exists nexus_anon_all on nexus_prompts for all to anon using (true) with check (true);
-create policy if not exists nexus_anon_all on nexus_collections for all to anon using (true) with check (true);
-create policy if not exists nexus_anon_all on nexus_models for all to anon using (true) with check (true);
-create policy if not exists nexus_anon_all on nexus_runs for all to anon using (true) with check (true);
-create policy if not exists nexus_anon_all on nexus_versions for all to anon using (true) with check (true);
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='nexus_workflows' and policyname='nexus_anon_all') then
+    create policy nexus_anon_all on nexus_workflows for all to anon using (true) with check (true);
+  end if;
+end $$;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='nexus_prompts' and policyname='nexus_anon_all') then
+    create policy nexus_anon_all on nexus_prompts for all to anon using (true) with check (true);
+  end if;
+end $$;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='nexus_collections' and policyname='nexus_anon_all') then
+    create policy nexus_anon_all on nexus_collections for all to anon using (true) with check (true);
+  end if;
+end $$;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='nexus_models' and policyname='nexus_anon_all') then
+    create policy nexus_anon_all on nexus_models for all to anon using (true) with check (true);
+  end if;
+end $$;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='nexus_runs' and policyname='nexus_anon_all') then
+    create policy nexus_anon_all on nexus_runs for all to anon using (true) with check (true);
+  end if;
+end $$;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='nexus_versions' and policyname='nexus_anon_all') then
+    create policy nexus_anon_all on nexus_versions for all to anon using (true) with check (true);
+  end if;
+end $$;
