@@ -1,0 +1,5 @@
+node_modules/
+dist/
+check.mjs
+*.tsbuildinfo
+.DS_Store

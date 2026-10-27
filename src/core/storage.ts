@@ -1,0 +1,6 @@
+// IndexedDB 适配器：主存 IndexedDB，失败时回退 localStorage。未来替换为 Supabase 时只需替换本文件。
+const DB='nexus-ai-lab', VER=1;
+function openDB():Promise<IDBDatabase>{ return new Promise((res,rej)=>{ const r=indexedDB.open(DB,VER); r.onupgradeneeded=()=>{ if(!r.result.objectStoreNames.contains('kv')) r.result.createObjectStore('kv'); }; r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+export async function idbGet(key:string):Promise<any>{ try{ const db=await openDB(); return await new Promise((res)=>{ const t=db.transaction('kv').objectStore('kv').get(key); t.onsuccess=()=>res(t.result??null); t.onerror=()=>res(null); }); }catch{ try{ const v=localStorage.getItem('nexus:'+key); return v?JSON.parse(v):null }catch{ return null } } }
+export async function idbSet(key:string,val:any):Promise<void>{ try{ const db=await openDB(); await new Promise<void>((res)=>{ const t=db.transaction('kv','readwrite').objectStore('kv').put(val,key); t.onsuccess=()=>res(); t.onerror=()=>res(); }); }catch{ try{ localStorage.setItem('nexus:'+key,JSON.stringify(val)); }catch{} } }
+export async function idbClear(){ try{ const db=await openDB(); await new Promise<void>((res)=>{ const t=db.transaction('kv','readwrite').objectStore('kv').clear(); t.onsuccess=()=>res(); t.onerror=()=>res(); }); }catch{} localStorage.removeItem('nexus:state'); }
