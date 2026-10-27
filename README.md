@@ -10,6 +10,18 @@ npm run build    # TypeScript + Vite 生产构建
 npm run preview  # 预览 dist
 ```
 
+## 合并版（2026-10-28）：学习管理已并入 Nexus
+- 左侧导航新增“学习管理”：仪表盘、错题列表、新增错题、复习计划、学科统计、知识点统计、学习日历、每日任务、学习记录、导入导出、个人设置、管理与诊断，12 个标签页对应 StudyFlow 的 14 个页面功能。
+- 复习算法与 StudyFlow 一致：默认间隔 1、3、7、15、30 天，答对延长、答错缩短为 1 天、连续答错优先，手动改日期优先；学科不写死，统计随真实错题动态生成。
+- 后端宿主为 StudyFlow 已有新加坡 Supabase 项目（新项目因账号免费上限 2 个被禁用，未暂停、未删除任何现有项目），Nexus 表以 nexus_ 前缀新建，不改动 StudyFlow 原有表；DeepSeek 真实调用走 Edge Function nexus-chat，密钥只在 Supabase Secrets 里，见下方后端说明。
+- StudyFlow 原应用（~/workspace/studyflow/ 及其 GitHub/Pages）不动，合并是指 Nexus 内新增一套学习功能模块。
+
+## 后端连接（合并版）
+- 本地开发：复制 `.env.example` 为 `.env`，填入 StudyFlow 项目的 URL 与 anon 公开密钥（不要填 service_role），不要提交 `.env`。
+- 数据库：在 StudyFlow 项目 SQL 编辑器里依次跑 `supabase/migrations/001_nexus.sql` 再跑 `002_merged_study.sql`（可重跑）。
+- 真实模型：部署 `supabase/functions/nexus-chat`，并在 Edge Functions Secrets 里设 `DEEPSEEK_API_KEY`；未设时前端会明确报错并回退本地模拟，不冒充真模型。
+- 已知限制：合并版未接入 Supabase Auth 登录页与私有 Storage 图片上传（StudyFlow 原应用有这些能力），未用 Tailwind 与 Playwright，沿用 Nexus 原有纯 CSS 响应式体系；日历为当月布局，到期计数真实。
+
 ## 功能导航
 - 总览：本地运行记录算出的指标与趋势（非写死数字）
 - 智能体：6 个预设角色，卡片/表格视图、搜索/标签/批量删除/收藏，详情 6 个标签（含本地模拟测试控制台）
